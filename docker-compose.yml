@@ -10,7 +10,7 @@ services:
       - .:/app
     environment:
       - FLASK_ENV=development
-      - DATABASE_URL=sqlite:///instance/items.db
+      - DATABASE_URL=postgresql://meu_usuario:123@localhost/meu_banco
     depends_on:
       - postgres
 
@@ -21,9 +21,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: your_user
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_db
+      POSTGRES_USER: meu_usuario
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: meu_banco
     volumes:
       - postgres-volume:/var/lib/postgresql/data
 

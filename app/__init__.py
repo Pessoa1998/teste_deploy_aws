@@ -2,7 +2,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///items.db'
+# DATABASE_URL=postgresql://meu_usuario:123@localhost/meu_banco
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://your_user:your_password@postgres/your_db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///items.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://meu_usuario:123@localhost/meu_banco'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
