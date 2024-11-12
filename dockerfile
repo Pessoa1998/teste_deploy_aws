@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiando o código do projeto para dentro do container
 COPY . .
 
-# Definindo o comando para rodar a aplicação Flask
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Usando Gunicorn para rodar o Flask
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]

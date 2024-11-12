@@ -78,9 +78,279 @@
 
 
 # app/routes.py
+# from app.app import app, db
+# from app.models import Item
+# from flask import render_template, request, redirect, url_for, jsonify
+
+# @app.route('/')
+# @app.route('/cadastro', methods=['GET', 'POST'])
+# def cadastro():
+#     if request.method == 'POST':
+#         nome = request.form['nome']
+#         descricao = request.form['descricao']
+#         preco = request.form['preco']
+#         quantidade = request.form['quantidade']
+        
+#         # Criação de um novo item no banco de dados
+#         novo_item = Item(nome=nome, descricao=descricao, preco=preco, quantidade=quantidade)
+#         db.session.add(novo_item)
+#         db.session.commit()
+        
+#         # Redireciona para a página de visualização após cadastro
+#         return redirect(url_for('visualizar'))
+    
+#     return render_template('cadastro.html')
+
+# @app.route('/visualizar')
+# def visualizar():
+#     # Consulta os itens cadastrados no banco de dados
+#     itens = Item.query.all()
+#     return render_template('visualizar.html', itens=itens)
+
+# @app.route('/excluir/<int:id>', methods=['DELETE'])
+# def excluir(id):
+#     item = Item.query.get_or_404(id)
+#     db.session.delete(item)
+#     db.session.commit()
+#     return jsonify({'message': 'Item excluído com sucesso'}), 200
+
+# @app.route('/editar/<int:id>', methods=['PUT'])
+# def editar(id):
+#     data = request.get_json()
+#     item = Item.query.get_or_404(id)
+    
+#     item.nome = data.get('nome', item.nome)
+#     item.descricao = data.get('descricao', item.descricao)
+#     item.preco = data.get('preco', item.preco)
+#     item.quantidade = data.get('quantidade', item.quantidade)
+    
+#     db.session.commit()
+#     return jsonify({'message': 'Item atualizado com sucesso'}), 200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from app.app import app, db
+# from app.models import Item
+# from flask import render_template, request, redirect, url_for, jsonify
+# from app.tasks import add_item_task  # Importe a função de tarefa
+
+# @app.route('/')
+# @app.route('/cadastro', methods=['GET', 'POST'])
+# def cadastro():
+#     if request.method == 'POST':
+#         nome = request.form['nome']
+#         descricao = request.form['descricao']
+#         preco = request.form['preco']
+#         quantidade = request.form['quantidade']
+        
+#         # Executa a tarefa de adicionar item em segundo plano
+#         task = add_item_task.apply_async(args=[nome, descricao, preco, quantidade])
+        
+#         # Feedback sobre o status da tarefa
+#         return jsonify({'message': 'Cadastro em andamento', 'task_id': task.id}), 202
+    
+#     return render_template('cadastro.html')
+
+# @app.route('/visualizar')
+# def visualizar():
+#     # Consulta os itens cadastrados no banco de dados
+#     itens = Item.query.all()
+#     return render_template('visualizar.html', itens=itens)
+
+# @app.route('/excluir/<int:id>', methods=['DELETE'])
+# def excluir(id):
+#     item = Item.query.get_or_404(id)
+#     db.session.delete(item)
+#     db.session.commit()
+#     return jsonify({'message': 'Item excluído com sucesso'}), 200
+
+# @app.route('/editar/<int:id>', methods=['PUT'])
+# def editar(id):
+#     data = request.get_json()
+#     item = Item.query.get_or_404(id)
+    
+#     item.nome = data.get('nome', item.nome)
+#     item.descricao = data.get('descricao', item.descricao)
+#     item.preco = data.get('preco', item.preco)
+#     item.quantidade = data.get('quantidade', item.quantidade)
+    
+#     db.session.commit()
+#     return jsonify({'message': 'Item atualizado com sucesso'}), 200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from app.app import app, db
 from app.models import Item
 from flask import render_template, request, redirect, url_for, jsonify
+from app.tasks import add_item_task  # Importe a função de tarefa
 
 @app.route('/')
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -91,13 +361,11 @@ def cadastro():
         preco = request.form['preco']
         quantidade = request.form['quantidade']
         
-        # Criação de um novo item no banco de dados
-        novo_item = Item(nome=nome, descricao=descricao, preco=preco, quantidade=quantidade)
-        db.session.add(novo_item)
-        db.session.commit()
+        # Executa a tarefa de adicionar item em segundo plano
+        task = add_item_task.apply_async(args=[nome, descricao, preco, quantidade])
         
-        # Redireciona para a página de visualização após cadastro
-        return redirect(url_for('visualizar'))
+        # Feedback sobre o status da tarefa
+        return jsonify({'message': 'Cadastro em andamento', 'task_id': task.id}), 202
     
     return render_template('cadastro.html')
 
