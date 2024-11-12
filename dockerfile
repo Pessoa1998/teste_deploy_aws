@@ -1,23 +1,24 @@
 # Use uma imagem base do Python
-FROM python:3.9-slim
+FROM python:3.10-slim
 
-# Instale as dependências do sistema operacional
-RUN apt-get update && apt-get install -y curl
+# Crie um usuário não-root
+RUN groupadd -r puser && useradd -r -m -g puser -G audio,video -s /sbin/nologin puser
+USER puser
 
-# Defina o diretório de trabalho dentro do container
+# Defina o diretório de trabalho
 WORKDIR /app
 
-# Copie o arquivo de dependências (requirements.txt) para o container
-COPY requirements.txt /app/
+# Copie apenas requirements.txt
+COPY requirements.txt .
 
-# Instale as dependências do Python
+# Instale dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie o código da aplicação para o container
-COPY . /app/
+# Copie o código da aplicação
+COPY . .
 
-# Exponha a porta que o Flask irá usar
+# Exponha a porta
 EXPOSE 5000
 
-# Comando para rodar a aplicação Flask
-CMD ["python", "app.py"]
+# Comando para rodar a aplicação
+CMD ["python", "(link unavailable)"]
