@@ -1,14 +1,17 @@
-FROM python:3.10-slim
+# Usando uma imagem Python como base
+FROM python:3.10
 
-# Atualizar o pip e instalar dependências de sistema
-RUN pip install --upgrade pip \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends build-essential
-
-# Criar o usuário e diretório de trabalho
-RUN groupadd -r puser && useradd -r -m -g puser -G audio,video puser
+# Definindo o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copiar e instalar dependências
+# Copiando o requirements.txt para o container
 COPY requirements.txt .
+
+# Instalando as dependências
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiando o código do projeto para dentro do container
+COPY . .
+
+# Definindo o comando para rodar a aplicação Flask
+CMD ["flask", "run", "--host=0.0.0.0"]
