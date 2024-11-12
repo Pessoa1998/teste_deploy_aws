@@ -1,24 +1,14 @@
-# Use uma imagem base do Python
 FROM python:3.10-slim
 
-# Crie um usuário não-root
-RUN groupadd -r puser && useradd -r -m -g puser -G audio,video -s /sbin/nologin puser
-USER puser
+# Atualizar o pip e instalar dependências de sistema
+RUN pip install --upgrade pip \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends build-essential
 
-# Defina o diretório de trabalho
+# Criar o usuário e diretório de trabalho
+RUN groupadd -r puser && useradd -r -m -g puser -G audio,video puser
 WORKDIR /app
 
-# Copie apenas requirements.txt
+# Copiar e instalar dependências
 COPY requirements.txt .
-
-# Instale dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Copie o código da aplicação
-COPY . .
-
-# Exponha a porta
-EXPOSE 5000
-
-# Comando para rodar a aplicação (substitua 'app.py' pelo nome correto do arquivo principal)
-CMD ["python", "app.py"]
