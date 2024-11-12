@@ -78,7 +78,7 @@
 
 
 # app/routes.py
-from app import app, db
+from app.app import app, db
 from app.models import Item
 from flask import render_template, request, redirect, url_for, jsonify
 
