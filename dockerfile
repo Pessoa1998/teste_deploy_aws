@@ -20,5 +20,5 @@ COPY . .
 # Exponha a porta
 EXPOSE 5000
 
-# Comando para rodar a aplicação
-CMD ["python", "(link unavailable)"]
+# Comando para rodar a aplicação (substitua 'app.py' pelo nome correto do arquivo principal)
+CMD ["python", "app.py"]
