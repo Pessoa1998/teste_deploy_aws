@@ -1,32 +1,20 @@
-# Use uma imagem base com o Python e o Node
+# Use a imagem base oficial do Python
 FROM python:3.9-slim
 
-# Instale o Node.js no container
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Instalar Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs
-
-# Defina o diretório de trabalho para o projeto
+# Defina o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copie os arquivos do projeto para dentro do container
-COPY . /app
+# Copie o arquivo de dependências (requirements.txt) para o container
+COPY requirements.txt /app/
 
 # Instale as dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Instale as dependências do Node
-COPY package.json /app
-RUN npm install
+# Copie o código da aplicação para o container
+COPY . /app/
 
-# Exponha a porta que o Python vai rodar (ajuste conforme necessário)
+# Exponha a porta que o Flask irá utilizar
 EXPOSE 5000
 
-# Defina o comando padrão para rodar a aplicação
+# Comando para rodar a aplicação Flask
 CMD ["python", "app.py"]
